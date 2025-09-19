@@ -7,7 +7,8 @@ function App() {
   return (
     <>
       <div>
-        <ProductCard/>
+        <ProductCard name="Mountain" price = "800.00" image = "https://picsum.photos/seed/picsum/200/300"/>
+        <ProductCard name="Unknown" price = "550.00" image = "https://picsum.photos/id/20/200/300"/>
       </div>
       
     </>
