@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const[password, setPassword]= useState("") // Repeate
   const[email, setEmail]= useState("")
 
   function login(){
+
+    axios.post("http://localhost:5000/api/users/login",{
+      email: email,
+      password: password}).then((response)=>{
+        console.log(response.data)
+        toast.success("Login Successful")
+      }).catch((error)=>{
+        console.log(error)
+        toast.error("Login Failed")
+      })
+
+
     console.log(email)
     console.log(password)
   }
