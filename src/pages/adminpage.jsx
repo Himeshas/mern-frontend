@@ -3,6 +3,7 @@ import { FaProductHunt } from "react-icons/fa6";
 import { CiShoppingCart } from "react-icons/ci";
 import { FaRegUser } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
+import ProductsAdminPage from "./admin/productsadminpage";
 
 export default function AdminPage() {
   return (
@@ -19,7 +20,7 @@ export default function AdminPage() {
 
           <Routes path="/*">
             <Route path="/" element={<h1>Dashboard</h1>} />
-            <Route path="/products" element={<h1>Products</h1>} />
+            <Route path="/products" element={<ProductsAdminPage/>} />
             <Route path="/orders" element={<h1>Orders</h1>} />
           </Routes>
 
