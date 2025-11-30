@@ -1,19 +1,35 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const[password, setPassword]= useState("") // Repeate
   const[email, setEmail]= useState("")
+  const navigate = useNavigate();
 
   function login(){
 
-    axios.post("http://localhost:5000/api/users/login",{
+    axios.post(import.meta.env.BACKEND_URL+"/api/users/login",{
       email: email,
       password: password}).then((response)=>{
         console.log(response.data)
         toast.success("Login Successful")
+
+        localStorage.setItem("token", response.data.token)
+
+        const token = localStorage.getItem("token")
+
+        if(response.data.role == "admin"){
+          //go to admin dashboard
+          //window.location.href = '/admin'
+          navigate('/admin')
+        }else{
+          //go to user dashboard
+          //window.location.href = '/'
+          navigate('/')
+        }
+
       }).catch((error)=>{
         console.log(error)
         toast.error("Login Failed")
