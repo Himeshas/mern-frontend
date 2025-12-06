@@ -4,12 +4,13 @@ import { CiShoppingCart } from "react-icons/ci";
 import { FaRegUser } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
 import ProductsAdminPage from "./admin/productsadminpage";
+import AddProductAdminPage from "./admin/addProductAdminPage";
 
 export default function AdminPage() {
   return (
     <div className="w-full h-screen bg-red-600 flex">
         <div className="w-[300px] h-full flex flex-col">
-          <span className="text-3xl font-bold my-5">Admin Panel</span>
+          <span className="text-3xl font-bold my-5 pl-[20px]">Admin Panel</span>
           <Link className="flex flex-row h-[60px] w-full p-[20px] items-center gap-[10px]" to="/admin/products"><FaProductHunt />Products</Link>
           <Link className="flex flex-row h-[60px] w-full p-[20px] items-center gap-[10px]" to="/admin/orders"><CiShoppingCart />Orders</Link>
           <Link className="flex flex-row h-[60px] w-full p-[20px] items-center gap-[10px]" to="/admin/users"><FaRegUser />Users</Link>
@@ -21,6 +22,7 @@ export default function AdminPage() {
           <Routes path="/*">
             <Route path="/" element={<h1>Dashboard</h1>} />
             <Route path="/products" element={<ProductsAdminPage/>} />
+            <Route path="/newProduct" element={<AddProductAdminPage/>} />
             <Route path="/orders" element={<h1>Orders</h1>} />
           </Routes>
 
