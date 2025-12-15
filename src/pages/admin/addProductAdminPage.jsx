@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom"
 
 export default function AddProductAdminPage() {
 
@@ -13,6 +15,46 @@ export default function AddProductAdminPage() {
     const [stock, setStock] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
     const [category, setCategory] = useState("Cream");
+    const navigate = useNavigate();
+
+    function handlSubmit(){
+        
+        const altNamesInArray = alternativeNames.split(',');
+        const newProduct = {
+            productId : productId,
+            name : productName,
+            altNames : altNamesInArray,
+            labelledPrice : labelledPrice,
+            price : price,
+            images : images,
+            description : description,
+            stock : stock,
+            isAvailable : isAvailable,
+            category : category
+        };
+
+        console.log("New Product Added: ", newProduct);
+
+        const token = localStorage.getItem("token");
+
+        if(token == null){
+
+            window.location.href = '/login';
+            return;
+        }
+
+        axios.post(import.meta.env.VITE_BACKEND_URL +"/api/products", newProduct , {headers: {Authorization: "Bearer " +token}})
+        .then((response)=>{
+            console.log("Product added successfully:", response.data);
+            toast.success("Product added successfully");
+            navigate('/admin/products');
+        })
+        .catch((error)=>{
+            console.error("Error adding product:", error);
+            toast.error("Failed to add product");
+        });
+
+    }
 
 
     return(
@@ -44,14 +86,14 @@ export default function AddProductAdminPage() {
                 <div className="w-[200px] flex flex-col gap-[5px]">
 
                     <label className="text-sm font-semibold" >Labelled Price</label>
-                    <input type="text" onChange={(e)=>{setLabelledPrice(e.target.value)}} value={labelledPrice} className="w-full h-[40px] border-[1px] rounded-md" />
+                    <input type="number" onChange={(e)=>{setLabelledPrice(e.target.value)}} value={labelledPrice} className="w-full h-[40px] border-[1px] rounded-md" />
 
                 </div>
 
                 <div className="w-[200px] flex flex-col gap-[5px]">
 
                     <label className="text-sm font-semibold" >Price</label>
-                    <input type="text" onChange={(e)=>{setPrice(e.target.value)}} value={price} className="w-full h-[40px] border-[1px] rounded-md" />
+                    <input type="number" onChange={(e)=>{setPrice(e.target.value)}} value={price} className="w-full h-[40px] border-[1px] rounded-md" />
 
                 </div>
 
@@ -72,7 +114,7 @@ export default function AddProductAdminPage() {
                 <div className="w-[200px] flex flex-col gap-[5px]">
 
                     <label className="text-sm font-semibold" >Stock</label>
-                    <input type="text"  onChange={(e)=>{setStock(e.target.value)}} value={stock} className="w-full h-[40px] border-[1px] rounded-md" />
+                    <input type="number"  onChange={(e)=>{setStock(e.target.value)}} value={stock} className="w-full h-[40px] border-[1px] rounded-md" />
                 </div>
 
                 <div className="w-[200px] flex flex-col gap-[5px]">
@@ -101,7 +143,7 @@ export default function AddProductAdminPage() {
                 <div className="w-full  bg-amber-300 flex flex-row justify-center py-[20px]  ">
 
                     <Link to={"/admin/products"} className="w-[200px] h-[50px] bg-white text-black border-[1px] rounded-md flex justify-center items-center">Cancel</Link>
-                    <button className="w-[200px] h-[50px] bg-black text-white border-[1px] rounded-md ml-[20px]">Add Product</button>
+                    <button onClick={handlSubmit} className="w-[200px] h-[50px] bg-black text-white border-[1px] rounded-md ml-[20px]">Add Product</button>
                 </div>
 
 
