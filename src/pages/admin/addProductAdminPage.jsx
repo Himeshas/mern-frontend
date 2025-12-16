@@ -10,14 +10,25 @@ export default function AddProductAdminPage() {
     const [alternativeNames, setAlternativeNames] = useState("");
     const [labelledPrice, setLabelledPrice] = useState("");
     const [price, setPrice] = useState("");
-    const [images, setImages] = useState("");
+    const [images, setImages] = useState([]);
     const [description, setDescription] = useState("");
     const [stock, setStock] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
     const [category, setCategory] = useState("Cream");
     const navigate = useNavigate();
 
-    function handlSubmit(){
+     async function handlSubmit(){
+
+        const promisesArray = []
+
+        for(let i=0; i<images.length; i++){
+
+            const promise = uploadFile(images[i]);
+            promisesArray[i] = promise;
+
+        }
+
+        const responses = await Promise.all(promisesArray);
         
         const altNamesInArray = alternativeNames.split(',');
         const newProduct = {
@@ -26,7 +37,7 @@ export default function AddProductAdminPage() {
             altNames : altNamesInArray,
             labelledPrice : labelledPrice,
             price : price,
-            images : images,
+            images : responses,
             description : description,
             stock : stock,
             isAvailable : isAvailable,
@@ -100,7 +111,7 @@ export default function AddProductAdminPage() {
                 <div className="w-[500px] flex flex-col gap-[5px]">
 
                     <label className="text-sm font-semibold" >Images</label> 
-                    <input type="text"  onChange={(e)=>{setImages(e.target.value)}} value={images}className="w-full h-[40px] border-[1px] rounded-md" />
+                    <input type="file" multiple onChange={(e)=>{setImages(e.target.files)}} value={images} className="w-full h-[40px] border-[1px] rounded-md" />
 
                 </div>
 
