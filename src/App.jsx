@@ -10,6 +10,7 @@ import RegisterPage from './pages/registerPage.jsx'
 import AdminPage from './pages/adminpage.jsx'
 import TestPage from './pages/testPage.jsx'
 import toast, { Toaster } from 'react-hot-toast'
+import ClientPage from './pages/Client/clientPage.jsx'
 
 function App() {
   
@@ -19,11 +20,12 @@ function App() {
       <div className="w-full h-screen flex  justify-center items-center">
         <Toaster position='top-right'/>
           <Routes >
-            <Route path='/' element={<HomePage/>}/>
+            
             <Route path='/register' element={<RegisterPage/>}/>
             <Route path='/login' element={<LoginPage/>}/>
             <Route path='/Test' element={<TestPage/>}/>   
             <Route path='/admin/*' element={<AdminPage/>}/>
+            <Route path='/*' element={<ClientPage/>}/>
            </Routes>
         
       </div>

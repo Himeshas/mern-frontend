@@ -1,8 +1,9 @@
 import { meta } from "@eslint/js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BiPlusCircle, BiTrash } from "react-icons/bi";
+import { BiEdit, BiPlusCircle, BiTrash } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "../../components/loader";
 
 
 const sampleProducts = [
@@ -72,20 +73,31 @@ const sampleProducts = [
 export default function ProductsAdminPage() {
 
     const [products, setProducts] = useState(sampleProducts);
-    const [a, setA] = useState(0);
-   /* useEffect(
-        axios.get(import.meta.env.VITE_BACKEND_URL + "/api/products").then(
+    //const [a, setA] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
-            (response)=>setProducts(response.data)
-        ), [a]
-    )*/
+    /*
+   useEffect( ()=>{
+       if(isLoading ){
+        axios.get(import.meta.env.VITE_BACKEND_URL + "/api/products").then(    
+
+            (response)=>{setProducts(response.data)
+                          setIsLoading(false)}
+       );
+      }
+    }, [isLoading]
+   
+); //un comment this*/
     
 
     const navigate = useNavigate();
 
     return (
         <div className="w-full h-full bg-blue-800  ">
-            <table >
+
+            {isLoading ? ( <Loader/> ) :
+            
+            (<table >
                 <thead>
                     <tr>
                         <th className="p-[10px] border-2">Image</th>
@@ -101,7 +113,7 @@ export default function ProductsAdminPage() {
 
                 <tbody className="border-t-4">
                     
-                        {sampleProducts.map(
+                        {sampleProducts.map( /* change as products.map */
                             
                             (product, index)=>{
                                 return (
@@ -115,7 +127,7 @@ export default function ProductsAdminPage() {
                                         <td className="p-[10px] border-2">{product.labelledPrice}</td>
                                         <td className="p-[10px] border-2">{product.stock}</td>
                                         <td className="p-[10px] border-2">{product.isAvailable ? "Available" : "Not Available"}</td>
-                                        <td className="p-[10px] border-2">
+                                        <td className="p-[10px] border-2 flex flex-row justify-center items-center">
                                             <BiTrash className="text-3xl p-[7px] rounded-full text-white shadow-2xl shadow-red-500 cursor-pointer hover:text-red-600 bg-red-500 "
                                             onClick={
                                                 ()=>{
@@ -132,22 +144,30 @@ export default function ProductsAdminPage() {
                                                         console.log("Product deleted successfully:", response.data);
                                                         const updatedProducts = products.filter((p) => p.productId !== product.productId);
                                                         setProducts(updatedProducts);
-                                                        setA(a+1);
+                                                       // setA(a+1);
+                                                        setIsLoading(!isLoading);
                                                     })
                                                     .catch((error)=>{
                                                         console.error("Error deleting product:", error);
                                                     });
                                                 }
                                             }/>
+                                            
+                                            <BiEdit className="text-3xl p-[7px] rounded-full text-white shadow-2xl shadow-blue-500 cursor-pointer hover:text-blue-600 bg-blue-500 ml-[10px]"
+                                            onClick={()=>{
+                                                navigate("/admin/updateProduct", {state: product})
+                                            }}/>
+                                        
                                         </td>
+                                        
                                     </tr>
                                 )
                             }
                         )}
                     
                 </tbody>
-            </table>
-
+            </table>)
+            } 
 
             <Link to={"/admin/newProduct"} className="fixed right-[60px] bottom-[60px] text-white bg-black  p-[20px] rounded-full shadow-2xl cursor-pointer">
 
