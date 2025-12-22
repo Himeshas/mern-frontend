@@ -1,0 +1,47 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Loader from "../../components/loader";
+import ProductCard from "../../components/productCard";
+
+export default function ProductsPage() {
+
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        if (loading) {
+
+            axios.get(import.meta.env.VITE_BACKEND_URL + "/api/products")
+                .then((response)=>{
+
+                    console.log(response.data);
+                    setLoading(false);
+                })
+        }
+    }, [loading]);
+
+    return (
+        <div className="w-full h-full bg-green-400 ">
+
+            {
+                loading ? <Loader/> :
+                <div className="w-full flex flex-wrap gap-[40px] justify-center items-center">
+                   {
+                    products.map(
+                        (product) => {
+                            return (
+                                
+                                <ProductCard key={product.productId}/>
+                            )
+
+                        }
+                     )  
+                   }
+
+                </div>    
+            }
+
+        </div>
+    )
+}
