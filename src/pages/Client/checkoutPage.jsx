@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BiTrash } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +9,37 @@ export default function CheckoutPage() {
 
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [user,setUser] = useState(null);
+    const [name,setName] = useState("");
+    const [address,setAddress] = useState("");
+    const [phone,setPhone] = useState("");
+
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+
+        if(token == null){
+            toast.error("Please login to continue.")
+            navigate("/login")
+            return;
+        }else{
+            axios.get(import.meta.env.VITE_BACKEND_URL+ "/api/users/",{
+                headers:{Authorization:`Bearer ${token}`}
+            }).then(
+                (res)=>{
+                    setUser(res.data);
+                    setName(res.data.firstName);
+                }
+            ).catch(
+                (err)=>{
+                    console.log(err)
+                    toast.error("Failed to fetch user.")
+                    navigate("/login")
+                }
+            )
+        }
+
+    },[])
 
     const [cart, setCart] = useState(location.state.item || []);
 
@@ -44,9 +75,16 @@ export default function CheckoutPage() {
 
             }
 
+            if(name === "" || address === "" || phone === ""){
+
+                toast.error("Please fill all the fields")
+                return;
+
+            }
+
             const order = {
-                address : "50/A",
-                phone : "0718457345",
+                address : address,
+                phone : phone,
                 items : []
             }
 
@@ -130,6 +168,19 @@ export default function CheckoutPage() {
                     )
                 }))
             }
+
+            <div className="w-[800px] h-[100px] m-[10px] p-[10px] shadow-2xl flex flex-row items-center justify-end relative">
+
+               <input className="w-[200px] h-[40px] border border-gray-300 rounded-lg p-[10px] mr-[10px]" type="text" 
+                placeholder="Enter your name" value={name} onChange={(e)=>setName(e.target.value)}/>
+
+               <input className="w-[200px] h-[40px] border border-gray-300 rounded-lg p-[10px] mr-[10px]" type="text" 
+                placeholder="Enter your address" value={address} onChange={(e)=>setAddress(e.target.value)}/>
+
+               <input className="w-[200px] h-[40px] border border-gray-300 rounded-lg p-[10px] mr-[10px]" type="number" 
+                placeholder="Enter your phone number" value={phone} onChange={(e)=>setPhone(e.target.value)}/>  
+                
+            </div>
             
             <div className="w-[800px] h-[100px] m-[10px] p-[10px] shadow-2xl flex flex-row items-center justify-end relative">
 
