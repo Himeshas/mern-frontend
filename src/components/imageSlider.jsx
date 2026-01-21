@@ -4,7 +4,7 @@ export default function ImageSlider(props) {
 
     return (
 
-        <div className="w-[400px] h-[500px] ">
+        <div className="w-[300px] h-[500px] ">
             <img src={images[currentImageIndex]} className="w-full h-[400px] object-cover" />
 
             <div className="w-full h-[100px] flex flex-row justify-center items-center gap-[2px]">

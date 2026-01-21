@@ -38,17 +38,17 @@ export default function ProductOverView() {
             }
 
             {
-                status == "success" && <div className="w-full h-full flex flex-row"> 
+                status == "success" && <div className="w-full h-full flex flex-col md:flex-row"> 
                     
-                    <div className="w-[49%] h-full bg-blue-500 flex flex-col justify-center items-center">
+                    <div className="w-full md:w-[49%] h-full bg-blue-500 flex flex-col justify-center items-center">
                         
                         <ImageSlider images={product.images} useState={useState} />
 
                     </div>
 
-                    <div className="w-[49%] h-full flex flex-col items-center pt-[50px]">
+                    <div className="w-full md:w-[49%] h-full flex flex-col items-center pt-[50px]">
 
-                         <h1 className="text-2xl font-bold" >{product.name}</h1> <span className="font-light">{product.altname.join("|")}</span>
+                         <h1 className="text-2xl my-4 text-center font-bold" >{product.name}</h1> <span className="font-light">{product.altname.join("|")}</span>
                          <p className="text-lg mt-[20px]">{product.description}</p>
 
                          <div className="w-full flex flex-col items-center mt-[20px]">

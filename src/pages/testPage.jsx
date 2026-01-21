@@ -42,7 +42,10 @@ export default function TestPage() {
   return (
     <div className="w-full h-screen bg-amber-300 flex justify-center items-center">
       
-      <Loader/>
+    {/*
+    <Loader/>
+    */}
+    <div className="bg-red-700 w-[300px] h-[300px] md:bg-blue-800"></div>
       
     </div>
   );
