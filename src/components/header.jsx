@@ -1,5 +1,5 @@
 import { BiCart } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 
 export default function Header() {
@@ -16,6 +16,13 @@ export default function Header() {
                  <BiCart className="text-white text-3xl ml-4"/>
             
             </Link>
+
+            {
+                token != null && <button onClick={()=>{
+                    localStorage.removeItem("token")
+                    Navigate("/login")
+                }}>Logout</button>
+            }
 
         </header>
     )
